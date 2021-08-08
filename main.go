@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -24,7 +23,7 @@ func getDirContent(dirPath string, depth int, stopDepth int, printFiles bool) (s
 	var result string
 	var part string
 	var listLength int
-	var files []fs.FileInfo
+	var files []os.FileInfo
 
 	dirContent, err := ioutil.ReadDir(dirPath)
 
@@ -56,7 +55,7 @@ func getDirContent(dirPath string, depth int, stopDepth int, printFiles bool) (s
 	return result, err
 }
 
-func setOffsets(file fs.FileInfo, idx int, listLength int, depth int, stopDepth int) string {
+func setOffsets(file os.FileInfo, idx int, listLength int, depth int, stopDepth int) string {
 	var offset string
 	var result string
 
@@ -74,7 +73,7 @@ func setOffsets(file fs.FileInfo, idx int, listLength int, depth int, stopDepth 
 	return result + info
 }
 
-func getFileStatsStr(file fs.FileInfo) string {
+func getFileStatsStr(file os.FileInfo) string {
 	var size string
 
 	if !file.IsDir() {
