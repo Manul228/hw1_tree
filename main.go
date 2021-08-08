@@ -22,14 +22,24 @@ func getDirContent(dirPath string, depth int, stopDepth int, printFiles bool) (s
 
 	var result string
 	var part string
+	var listLength int
+	var files []fs.FileInfo
 
-	files, err := ioutil.ReadDir(dirPath)
-	listLength := len(files)
+	dirContent, err := ioutil.ReadDir(dirPath)
+
+	if !printFiles {
+		for _, f := range dirContent {
+			if f.IsDir() {
+				files = append(files, f)
+			}
+		}
+	} else {
+		files = dirContent
+	}
+
+	listLength = len(files)
 
 	for idx, file := range files {
-		if !file.IsDir() && !printFiles {
-			continue
-		}
 		filePath := filepath.Join(dirPath, file.Name())
 		if file.IsDir() {
 			result += setOffsets(file, idx, listLength, depth, stopDepth)
